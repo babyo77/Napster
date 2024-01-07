@@ -128,7 +128,7 @@ function DisplayPlaylist() {
     SongsFragment.appendChild(songContainer);
     AllSongs.appendChild(SongsFragment);
   }
-  CurrentCover.src = `https://your-napster.vercel.app/${FetchSongs[1].cover}`;
+  CurrentCover.src = `${FetchSongs[1].cover}`;
   CurrentArtist.textContent = FetchSongs[0].artist;
   CurrentSongTitle.textContent = FetchSongs[0].title;
   CurrentSongTitle2.textContent = FetchSongs[0].title;

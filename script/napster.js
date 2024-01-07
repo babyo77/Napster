@@ -149,6 +149,7 @@ function RemoveDefaultLoaders() {
 LoadPlaylist.addEventListener("click", () => {
   const url = prompt("Enter Youtube Playlist URL");
   if (url.trim() !== "") {
+    localStorage.setItem("song",0)
     window.location.href = window.location.origin + `?playlist=${url}`;
   }
 });

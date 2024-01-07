@@ -26,7 +26,7 @@ let CurrentSongTitle2 = document.querySelector(".CurrentSongTitle2");
 let CurrentArtist = document.querySelectorAll(".CurrentArtist");
 let FetchSongs = [];
 let PlaylistUrl;
-let SongPlaying = 0;
+let SongPlaying = parseInt(localStorage.getItem("song")) || parseInt(url.get("song")) || 0;
 let MusicAudio;
 
 function GetPlaylist() {
@@ -175,8 +175,8 @@ function AddEventListeners() {
       PreviousSong();
     });
   });
-
-  Share.addEventListener("click", async () => {
+  
+  ShareNapster.addEventListener("click", async () => {
     if (navigator.share) {
       const location = window.location.replace("?share&song=", "");
       await navigator.share({
@@ -204,12 +204,13 @@ function AddEventListeners() {
   });
 }
 
-ShareNapster.addEventListener("click", async () => {
+Share.addEventListener("click", async () => {
+  const Location = (window.location.href).replace("?share&song=")
   if (navigator.share) {
     await navigator.share({
       title: "Napster",
-      text: `Listen Ad Free Music`,
-      url: window.location.origin,
+      text: `${FetchSongs[SongPlaying].title} by ${FetchSongs[SongPlaying].artist}`,
+      url: Location + `?share&song=${SongPlaying}`
     });
   } else {
     alert("Unable To Share");
@@ -218,6 +219,19 @@ ShareNapster.addEventListener("click", async () => {
 
 Transfer.addEventListener("click", () => {
   window.open("https://www.tunemymusic.com/transfer");
+});
+
+ShareNapster.addEventListener("click", async () => {
+  if (navigator.share) {
+    const location = window.location.replace("?share&song=", "");
+    await navigator.share({
+      title: "Napster",
+      text: `${FetchSongs[SongPlaying].title} by ${FetchSongs[SongPlaying].artist}`,
+      url: window.location.href + `?share&song=${SongPlaying}`,
+    });
+  } else {
+    alert("Unable To Share");
+  }
 });
 
 function ChangeCurrentSong(index) {
@@ -241,10 +255,12 @@ function AddMarquee() {
 }
 
 function PlaySong(index) {
+  localStorage.setItem("song",index)
   const SongId = FetchSongs[SongPlaying].audio.replace(
     "https://www.youtube.com/watch?v=",
     ""
   );
+ 
   ChangeCurrentSong(SongPlaying);
   FocusCurrentSong(SongPlaying);
   if (MusicAudio) {

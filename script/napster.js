@@ -496,7 +496,7 @@ function newHowl(SongId) {
           if (error) {
             HideShowLoader(false);
             console.log("Going server 2");
-             newHowl(SongPlaying)
+            newHowl(SongPlaying);
           }
         },
       });

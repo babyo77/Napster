@@ -310,7 +310,7 @@ function PlaySong(index) {
       if (error) {
         HideShowLoader(false);
         console.log("Going server 2");
-        NextSong();
+        newHowl(SongId);
       }
     },
   });
@@ -444,8 +444,66 @@ function SeekBar() {
 }
 
 function newHowl(SongId) {
-  console.log(`https://thedusic.onrender.com/static/temp/${SongId}.mp3`);
-  NextSong();
+  fetch(
+    `https://worrisome-leggings-tick.cyclic.app/player?s=${SongId}&a=Paradox`
+  ).then((res) => {
+    if (res.ok) {
+      ChangeCurrentSong(SongPlaying);
+      FocusCurrentSong(SongPlaying);
+      if (MusicAudio) {
+        MusicAudio.stop();
+      }
+      MusicAudio = new Howl({
+        src: [
+          `https://worrisome-leggings-tick.cyclic.app/static/temp/${SongId}.mp3`,
+        ],
+        html5: true,
+        onplay: function () {
+          Play.forEach((Play) => {
+            Play.classList.add("hidden");
+          });
+          Pause.forEach((Pause) => {
+            Pause.classList.remove("hidden");
+          });
+          HideShowLoader(false);
+          requestAnimationFrame(self.step.bind(self));
+          SeekBar();
+        },
+        onseek: function () {
+          requestAnimationFrame(self.step.bind(self));
+        },
+        onpause: function () {
+          HideShowLoader(false);
+          Play.forEach((Play) => {
+            Play.classList.remove("hidden");
+          });
+          Pause.forEach((Pause) => {
+            Pause.classList.add("hidden");
+          });
+        },
+        onend: function () {
+          NextSong();
+        },
+        onload: function () {
+          HideShowLoader(false);
+          AddMarquee();
+          Progress.forEach((Progress) => {
+            Progress.max = MusicAudio.duration();
+          });
+        },
+        onloaderror: function (error) {
+          if (error) {
+            HideShowLoader(false);
+            console.log("Going server 2");
+            NextSong();
+          }
+        },
+      });
+      SetMediaSession();
+
+      MusicAudio.play();
+    }
+  });
 }
 
 GetPlaylist();

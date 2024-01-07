@@ -9,6 +9,9 @@ const ClosePlayer = document.querySelectorAll(".ClosePlayer");
 const Player = document.querySelector(".Player");
 const Content = document.querySelector(".Content");
 const ShareNapster = document.querySelector(".ShareNapster");
+const Search = document.querySelector(".Search");
+const ErrorDiv = document.querySelector(".Error");
+const Refresh = document.querySelector(".Refresh");
 
 const Loader = document.querySelector(".loader");
 const SongLoader = document.querySelectorAll(".songLoader");
@@ -38,7 +41,7 @@ function GetPlaylist() {
     )}`;
   } else {
     PlaylistUrl =
-      "https://music-info-api.vercel.app/?url=https://youtube.com/playlist?list=PLeVdHaf0Nk496_cnHO1uG2QdywPhpWwOS&feature=shared";
+      "https://music-info-api.vercel.app/?url=PLeVdHaf0Nk496_cnHO1uG2QdywPhpWwOS";
   }
   FetchPlaylist();
 }
@@ -55,14 +58,15 @@ function FetchPlaylist() {
       FetchSongs = songs;
     })
     .then(() => {
-      DisplayPlaylist();
+      DisplayPlaylist(FetchSongs);
     })
     .catch((error) => {
+      ErrorDiv.classList.remove("hidden");
       console.log(error.message);
     });
 }
 
-function DisplayPlaylist() {
+function DisplayPlaylist(FetchSongs, query) {
   for (let i = 0; i < FetchSongs.length; i++) {
     const song = FetchSongs[i];
     const songContainer = document.createElement("div");
@@ -93,7 +97,7 @@ function DisplayPlaylist() {
       "justify-center",
       "items-center"
     );
-    loaderSpan.innerHTML = `<img loading="lazy" class="h-[100%] w-[100%] object-cover" src="${song.cover}">`;
+    loaderSpan.innerHTML = `<img loading="lazy" class="h-[100%] w-[100%] object-cover" src="${song.cover}" alt=${song.title}>`;
     const textContainer = document.createElement("div");
     textContainer.classList.add("text-white");
 
@@ -118,6 +122,7 @@ function DisplayPlaylist() {
     leftContainer.appendChild(textContainer);
 
     songContainer.id = song.id;
+
     songContainer.addEventListener("click", () => {
       HideShowLoader(true);
       SongPlaying = song.id;
@@ -135,9 +140,14 @@ function DisplayPlaylist() {
   CurrentSongTitle.textContent = FetchSongs[0].title;
   CurrentSongTitle2.textContent = FetchSongs[0].title;
   RemoveDefaultLoaders();
-  AddEventListeners();
-  HideShowLoader(false, true);
   FocusSong = document.querySelectorAll(".song");
+  HideShowLoader(false, true);
+  if (query) {
+    HideShowLoader(true);
+    localStorage.clear();
+    return;
+  }
+  AddEventListeners();
 }
 
 function RemoveDefaultLoaders() {
@@ -145,14 +155,6 @@ function RemoveDefaultLoaders() {
     loader.remove();
   });
 }
-
-LoadPlaylist.addEventListener("click", () => {
-  const url = prompt("Enter Youtube Playlist URL");
-  if (url.trim() !== "") {
-    localStorage.setItem("song",0)
-    window.location.href = window.location.origin + `?playlist=${url}`;
-  }
-});
 
 function AddEventListeners() {
   Play.forEach((Play) => {
@@ -179,18 +181,27 @@ function AddEventListeners() {
     });
   });
 
-  CurrentCover.forEach((CurrentCover) => {
-    CurrentCover.addEventListener(
+  CurrentCover.forEach((currentCover) => {
+    currentCover.addEventListener(
       "touchstart",
-      (e) => (touchStartX = e.changedTouches[0].clientX),
+      (e) => {
+        touchStartX = e.changedTouches[0].clientX;
+      },
       { passive: true }
     );
-    CurrentCover.addEventListener(
+
+    currentCover.addEventListener(
       "touchend",
-      (e) =>
-        e.changedTouches[0].clientX - touchStartX > 0
-          ? PreviousSong()
-          : NextSong(),
+      (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const deltaX = touchEndX - touchStartX;
+
+        if (deltaX > 50) {
+          PreviousSong();
+        } else if (deltaX < -50) {
+          NextSong();
+        }
+      },
       { passive: true }
     );
   });
@@ -223,6 +234,10 @@ Share.addEventListener("click", async () => {
   }
 });
 
+Search.addEventListener("click", () => {
+  FetchQuery();
+});
+
 Transfer.addEventListener("click", () => {
   window.open("https://www.tunemymusic.com/transfer");
 });
@@ -239,13 +254,33 @@ ShareNapster.addEventListener("click", async () => {
   }
 });
 
+LoadPlaylist.addEventListener("click", () => {
+  const url = prompt("Enter Youtube Playlist URL");
+  if (url.trim() !== "") {
+    localStorage.setItem("song", 0);
+    const newURL = url.replace(
+      /^https?:\/\/youtube\.com\/playlist\?list=|&feature=shared$/g,
+      ""
+    );
+    window.location.href = window.location.origin + `?playlist=${newURL}`;
+  }
+});
+
+Refresh.addEventListener("click", () => {
+  localStorage.setItem("song", 0);
+  window.location.href = window.location.origin;
+  ErrorDiv.classList.add("hidden");
+});
+
 function ChangeCurrentSong(index) {
   CurrentSongTitle.classList.remove("marquee");
   CurrentSongTitle.textContent = FetchSongs[index].title;
   CurrentSongTitle2.textContent = FetchSongs[index].title;
 
   CurrentCover.forEach((CurrentCover) => {
-    CurrentCover.src = `https://your-napster.vercel.app/${FetchSongs[index].cover}`;
+    CurrentCover.src =
+      FetchSongs[SongPlaying].cover ||
+      `https://your-napster.vercel.app/${FetchSongs[SongPlaying].cover}`;
   });
 
   CurrentArtist.forEach((CurrentArtist) => {
@@ -412,7 +447,9 @@ function SetMediaSession() {
     artist: FetchSongs[SongPlaying].artist,
     artwork: [
       {
-        src: `https://your-napster.vercel.app/${FetchSongs[SongPlaying].cover}`,
+        src:
+          FetchSongs[SongPlaying].cover ||
+          `https://your-napster.vercel.app/${FetchSongs[SongPlaying].cover}`,
       },
     ],
   });
@@ -501,6 +538,30 @@ function newHowl(SongId) {
       MusicAudio.play();
     }
   });
+}
+
+function FetchQuery() {
+  const query = prompt("Search");
+  if (query.trim() !== "") {
+    fetch(`https://music-info-api.vercel.app/${query}`)
+      .then((res) => {
+        if (res.status == 500) {
+          throw new Error("Error");
+        }
+        return res.json();
+      })
+      .then((query) => {
+        while (AllSongs.firstChild) {
+          AllSongs.removeChild(AllSongs.firstChild);
+        }
+        FetchSongs = query;
+        DisplayPlaylist(FetchSongs, query);
+      })
+      .catch((err) => {
+        ErrorDiv.classList.remove("hidden");
+        console.log(err);
+      });
+  }
 }
 
 GetPlaylist();

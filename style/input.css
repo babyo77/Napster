@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.loader {
+  background: linear-gradient(0.25turn, transparent, #fff, transparent),
+    linear-gradient(#ddd, #ddd), linear-gradient(#ddd, #ddd),
+    linear-gradient(#ddd, #ddd);
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-size: 215px 220px, 215px 130px, 100px 15px, 150px 15px;
+  background-position: -215px 0, 0 0, 15px 150px, 15px 180px;
+  animation: loading 1.5s infinite;
+}
+
+.marquee{
+  display: inline-block;
+  animation: marquee 11s linear infinite;
+}
+@keyframes marquee{
+0%{
+  transform: translateX(-100%);
+}
+100%{
+  transform: translateX(100%);
+}
+
+}
+@keyframes loading {
+  to {
+    background-position: 215px 0, 0 0, 15px 150px, 15px 180px;
+  }
+}
+
+.AllSongs::-webkit-scrollbar {
+  display: none;
+}
+
+.songLoader {
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 1s linear infinite;
+}
+.songLoader::before,
+.songLoader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 3px solid #E2CBFF;
+  animation: prixClipFix 2s linear infinite;
+}
+.songLoader::after {
+  transform: rotate3d(90, 90, 0, 180deg);
+  border-color: #E2CBFF;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes prixClipFix {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+  }
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+  }
+  75%,
+  100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: .7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+input[type="range"]::-webkit-slider-thumb {
+  width: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  background: #6e6e72;
+  box-shadow: -405px 0 0 400px #5f4ded;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 0;
+  appearance: none;
+  height: 5px;
+  background: #6e6e72;
+  box-shadow: -405px 0 0 400px #5f4ded;
+}
+
+input[type="range"]::-ms-thumb {
+  width: 0;
+  appearance: none;
+  height: 5px;
+  background: #6e6e72;
+  box-shadow: -405px 0 0 400px #5f4ded;
+}
+
+@keyframes slide-in-top {
+  0% {
+ 
+    transform: translateY(100svh);
+  }
+  100% {
+   
+    transform: translateY(0);
+  }
+}
+
+.slide-in-top {
+  animation: slide-in-top .5s ease-in-out;
+}
+
+
+@keyframes slide-down-top {
+  0% {
+ 
+    transform: translateY(0);
+  }
+  100% {
+   
+    transform: translateY(100svh);
+  }
+}
+
+.slide-down-top {
+  animation: slide-down-top .5s ease-in-out;
+}

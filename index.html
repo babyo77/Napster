@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Napster</title>
+    <link rel="stylesheet" href="style/minify.css" />
+    <script src="script/howler.js" defer></script>
+    <link rel="shortcut icon" href="assets/dp.webp" type="image/x-icon" />
+  </head>
+  <body
+    class="bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"
+  >
+    <div class="Player absolute h-svh w-svw hidden p-3 backdrop-blur-2xl z-10">
+      <nav class="flex p-2 pt-4 justify-between items-center">
+        <?xml version="1.0" ?><!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+        <svg
+          class="h-8 w-8 ClosePlayer fill-white"
+          style="enable-background: new 0 0 512 512"
+          version="1.1"
+          viewBox="0 0 512 512"
+          xml:space="preserve"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <polygon
+            points="396.6,160 416,180.7 256,352 96,180.7 115.3,160 256,310.5 "
+          />
+        </svg>
+      </nav>
+      <div class="flex justify-center">
+        <div class="p-1 h-[54svh] w-[54svh] flex justify-center mt-[2svh]">
+          <img
+            src=""
+            class="CurrentCover h-[100%] border-none rounded-lg w-[100%] object-cover"
+            alt=""
+          />
+        </div>
+      </div>
+      <div class="text-white max-md:w-full p-2.5 overflow-hidden">
+        <h1
+          class="whitespace-nowrap truncate CurrentSongTitle2 font-bold text-lg"
+        ></h1>
+
+        <h3
+          class="text-sm CurrentArtist text-zinc-300 truncate max-md:[50svw] font-semibold"
+        ></h3>
+      </div>
+
+      <div class="flex justify-center mt-6 px-3.5">
+        <input
+          type="range"
+          class="w-full Progress overflow-hidden appearance-none bg-zinc-700"
+          value="0"
+        />
+      </div>
+
+      <div class="flex items-center  mt-5 py-3 px-4 justify-between">
+        <?xml version="1.0" ?><!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+        <svg
+          class="h-8 w-8 ClosePlayer  fill-white"
+          style="enable-background: new 0 0 512 512"
+          version="1.1"
+          viewBox="0 0 512 512"
+          xml:space="preserve"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <polygon
+            points="396.6,160 416,180.7 256,352 96,180.7 115.3,160 256,310.5 "
+          />
+        </svg>
+
+        <div class="flex justify-center items-center gap-5">
+          <?xml version="1.0" ?><svg
+            class="PreviousSong cursor-pointer fill-zinc-200 h-10 w-10 rotate-180"
+            style="enable-background: new 0 0 100 100"
+            version="1.1"
+            viewBox="0 0 100 100"
+            xml:space="preserve"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <path
+              d="M18,25.5v49.1c0,1.5,1.7,2.5,3,1.7L65,51v25c0,1.1,0.9,2,2,2h13c1.1,0,2-0.9,2-2V24c0-1.1-0.9-2-2-2H67c-1.1,0-2,0.9-2,2  v25.1L21,23.8C19.7,23,18,24,18,25.5z"
+            />
+          </svg>
+
+          <?xml version="1.0" ?><svg
+            class="hidden PlaySong cursor-pointer h-14 w-14 fill-white"
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM372.5 276.5l-144 88C224.7 366.8 220.3 368 216 368c-13.69 0-24-11.2-24-24V168C192 155.3 202.2 144 216 144c4.344 0 8.678 1.176 12.51 3.516l144 88C379.6 239.9 384 247.6 384 256C384 264.4 379.6 272.1 372.5 276.5z"
+            />
+          </svg>
+
+          <span class="songLoader h-14 w-14"></span>
+
+          <?xml version="1.0" ?><svg
+            class="bi hidden PauseSong cursor-pointer h-14 w-14 fill-white bi-pause-circle-fill"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.25 5C5.56 5 5 5.56 5 6.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C7.5 5.56 6.94 5 6.25 5zm3.5 0c-.69 0-1.25.56-1.25 1.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C11 5.56 10.44 5 9.75 5z"
+            />
+          </svg>
+
+          <?xml version="1.0" ?><svg
+            class="cursor-pointer NextSong fill-zinc-200 h-10 w-10"
+            style="enable-background: new 0 0 100 100"
+            version="1.1"
+            viewBox="0 0 100 100"
+            xml:space="preserve"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <path
+              d="M18,25.5v49.1c0,1.5,1.7,2.5,3,1.7L65,51v25c0,1.1,0.9,2,2,2h13c1.1,0,2-0.9,2-2V24c0-1.1-0.9-2-2-2H67c-1.1,0-2,0.9-2,2  v25.1L21,23.8C19.7,23,18,24,18,25.5z"
+            />
+          </svg>
+        </div>
+
+        <?xml version="1.0" ?><svg
+          class="Share h-7 w-7 fill-white hover:fill-[#E2CBFF] transition-all duration-300 cursor-pointer"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21,11 L21,20 C21,21.1045695 20.1045695,22 19,22 L5,22 C3.8954305,22 3,21.1045695 3,20 L3,11 L5,11 L5,20 L19,20 L19,11 L21,11 Z M13,5.41421356 L13,16 L11,16 L11,5.41421356 L7.70710678,8.70710678 L6.29289322,7.29289322 L12,1.58578644 L17.7071068,7.29289322 L16.2928932,8.70710678 L13,5.41421356 Z"
+            fill-rule="evenodd"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <main class="fade-in">
+      <nav class="flex sticky justify-between items-center p-3 pt-5">
+        <div class="flex gap-2 justify-center items-center">
+          <span
+            class="LoadPlaylist relative inline-block overflow-hidden rounded-full p-[1px]"
+          >
+            <span
+              class="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]"
+            ></span>
+            <div
+              class="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950/90 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl"
+            >
+              Load Playlist
+            </div>
+          </span>
+
+          <?xml version="1.0" ?><svg
+            height="24"
+            class="ShareNapster fill-white hover:fill-[#E2CBFF] transition-all duration-300 cursor-pointer"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21,11 L21,20 C21,21.1045695 20.1045695,22 19,22 L5,22 C3.8954305,22 3,21.1045695 3,20 L3,11 L5,11 L5,20 L19,20 L19,11 L21,11 Z M13,5.41421356 L13,16 L11,16 L11,5.41421356 L7.70710678,8.70710678 L6.29289322,7.29289322 L12,1.58578644 L17.7071068,7.29289322 L16.2928932,8.70710678 L13,5.41421356 Z"
+              fill-rule="evenodd"
+            />
+          </svg>
+
+          <?xml version="1.0" ?><svg
+            height="27"
+            class="fill-white Transfer cursor-pointer hover:fill-[#E2CBFF]"
+            viewBox="0 0 24 24"
+            width="27"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19.924 10.383a1 1 0 0 0-.217-1.09l-5-5-1.414 1.414L16.586 9H4v2h15a1 1 0 0 0 .924-.617zM4.076 13.617a1 1 0 0 0 .217 1.09l5 5 1.414-1.414L7.414 15H20v-2H5a.999.999 0 0 0-.924.617z"
+            />
+          </svg>
+        </div>
+        <div
+          class="flex gap-3 text-xl cursor-pointer justify-center items-center"
+        >
+          <span
+            class="inline-flex font-semibold animate-text-gradient bg-gradient-to-r from-[#b2a8fd] via-[#5f4ded] to-[#c7d2fe] bg-[200%_auto] bg-clip-text text-[1.3rem] text-transparent"
+          >
+            Napster
+          </span>
+        </div>
+      </nav>
+      <h1 class="text-white text-2xl font-semibold mt-4 px-2 pl-3">Songs</h1>
+      <h1
+        class="hidden text-[.7rem] max-md:w-[73vw] max-md:block max-md:w-[73svw] max-md:text-[.9rem] mx-2 text-[#8678f9]"
+      ></h1>
+      <div class="mt-4 h-[71svh] max-md:h-[70svh] overflow-auto AllSongs">
+        <div
+          class="flex Loading mb-1 border justify-between hover:bg-zinc-900 p-3 items-center border-none rounded-lg"
+        >
+          <div class="flex gap-2 items-center">
+            <span
+              class="loader flex overflow-hidden h-12 w-12 rounded-md justify-center items-center"
+            >
+              <img src="" />
+            </span>
+            <div class="text-white">
+              <div class="loader w-[20vw] max-md:w-[55vw] h-4 mb-1"></div>
+              <div class="loader w-[7vw] max-md:w-[27vw] h-4"></div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex Loading mb-1 border justify-between hover:bg-zinc-900 p-3 items-center border-none rounded-lg"
+        >
+          <div class="flex gap-2 items-center">
+            <span
+              class="loader flex overflow-hidden h-12 w-12 rounded-md justify-center items-center"
+            >
+              <img src="" />
+            </span>
+            <div class="text-white">
+              <div class="loader w-[20vw] max-md:w-[55vw] h-4 mb-1"></div>
+              <div class="loader w-[7vw] max-md:w-[27vw] h-4"></div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex Loading mb-1 border justify-between hover:bg-zinc-900 p-3 items-center border-none rounded-lg"
+        >
+          <div class="flex gap-2 items-center">
+            <span
+              class="loader flex overflow-hidden h-12 w-12 rounded-md justify-center items-center"
+            >
+              <img src="" />
+            </span>
+            <div class="text-white">
+              <div class="loader w-[20vw] max-md:w-[55vw] h-4 mb-1"></div>
+              <div class="loader w-[7vw] max-md:w-[27vw] h-4"></div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex Loading mb-1 border justify-between hover:bg-zinc-900 p-3 items-center border-none rounded-lg"
+        >
+          <div class="flex gap-2 items-center">
+            <span
+              class="loader flex overflow-hidden h-12 w-12 rounded-md justify-center items-center"
+            >
+              <img src="" />
+            </span>
+            <div class="text-white">
+              <div class="loader w-[20vw] max-md:w-[55vw] h-4 mb-1"></div>
+              <div class="loader w-[7vw] max-md:w-[27vw] h-4"></div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex Loading mb-1 border justify-between hover:bg-zinc-900 p-3 items-center border-none rounded-lg"
+        >
+          <div class="flex gap-2 items-center">
+            <span
+              class="loader flex overflow-hidden h-12 w-12 rounded-md justify-center items-center"
+            >
+              <img src="" />
+            </span>
+            <div class="text-white">
+              <div class="loader w-[20vw] max-md:w-[55vw] h-4 mb-1"></div>
+              <div class="loader w-[7vw] max-md:w-[27vw] h-4"></div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex Loading mb-1 border justify-between hover:bg-zinc-900 p-3 items-center border-none rounded-lg"
+        >
+          <div class="flex gap-2 items-center">
+            <span
+              class="loader flex overflow-hidden h-12 w-12 rounded-md justify-center items-center"
+            >
+              <img src="" />
+            </span>
+            <div class="text-white">
+              <div class="loader w-[20vw] max-md:w-[55vw] h-4 mb-1"></div>
+              <div class="loader w-[7vw] max-md:w-[27vw] h-4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="py-3 px-3 fixed w-screen flex items-center justify-between bg-zinc-900 rounded-l-md rounded-r-md"
+      >
+        <div class="flex gap-2 items-center Content">
+          <span
+            class="loader flex overflow-hidden h-12 w-12 rounded-md shadow-lg shadow-zinc-900 justify-center items-center"
+          >
+            <img class="CurrentCover object-cover h-[100%] w-[100%]" src="" />
+          </span>
+          <div class="text-white max-md:w-[53svw] w-[37svw] overflow-hidden">
+            <h1
+              class="whitespace-nowrap truncate CurrentSongTitle font-bold text-sm"
+            ></h1>
+
+            <h3
+              class="text-[.6rem] CurrentArtist text-zinc-300 truncate max-md:[50svw] font-semibold"
+            ></h3>
+          </div>
+        </div>
+
+        <div class="flex justify-center max-md:hidden">
+          <input
+            type="range"
+            class="w-[40svw] cursor-pointer h-1 Progress overflow-hidden appearance-none bg-[#6e6e72] max-md:bg-zinc-700"
+            value="0"
+          />
+        </div>
+
+        <div class="flex items-center gap-2">
+          <?xml version="1.0" ?><svg
+            class="PreviousSong cursor-pointer fill-zinc-200 h-6 w-6 rotate-180"
+            style="enable-background: new 0 0 100 100"
+            version="1.1"
+            viewBox="0 0 100 100"
+            xml:space="preserve"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <path
+              d="M18,25.5v49.1c0,1.5,1.7,2.5,3,1.7L65,51v25c0,1.1,0.9,2,2,2h13c1.1,0,2-0.9,2-2V24c0-1.1-0.9-2-2-2H67c-1.1,0-2,0.9-2,2  v25.1L21,23.8C19.7,23,18,24,18,25.5z"
+            />
+          </svg>
+
+          <?xml version="1.0" ?><svg
+            class="PlaySong hidden cursor-pointer h-9 w-9 fill-white"
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM372.5 276.5l-144 88C224.7 366.8 220.3 368 216 368c-13.69 0-24-11.2-24-24V168C192 155.3 202.2 144 216 144c4.344 0 8.678 1.176 12.51 3.516l144 88C379.6 239.9 384 247.6 384 256C384 264.4 379.6 272.1 372.5 276.5z"
+            />
+          </svg>
+          <span class="songLoader h-9 w-9"></span>
+
+          <?xml version="1.0" ?><svg
+            class="bi PauseSong hidden cursor-pointer h-9 w-9 fill-white bi-pause-circle-fill"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.25 5C5.56 5 5 5.56 5 6.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C7.5 5.56 6.94 5 6.25 5zm3.5 0c-.69 0-1.25.56-1.25 1.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C11 5.56 10.44 5 9.75 5z"
+            />
+          </svg>
+
+          <?xml version="1.0" ?><svg
+            class="NextSong cursor-pointer fill-zinc-200 h-6 w-6"
+            style="enable-background: new 0 0 100 100"
+            version="1.1"
+            viewBox="0 0 100 100"
+            xml:space="preserve"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <path
+              d="M18,25.5v49.1c0,1.5,1.7,2.5,3,1.7L65,51v25c0,1.1,0.9,2,2,2h13c1.1,0,2-0.9,2-2V24c0-1.1-0.9-2-2-2H67c-1.1,0-2,0.9-2,2  v25.1L21,23.8C19.7,23,18,24,18,25.5z"
+            />
+          </svg>
+        </div>
+      </div>
+    </main>
+
+    <script src="script/napster-minify.js" defer></script>
+  </body>
+</html>

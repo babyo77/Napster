@@ -91,7 +91,7 @@ function DisplayPlaylist() {
       "justify-center",
       "items-center"
     );
-    loaderSpan.innerHTML = `<img loading="lazy" class="h-[100%] w-[100%] object-cover" src="https://your-napster.vercel.app/${song.cover}">`;
+    loaderSpan.innerHTML = `<img loading="lazy" class="h-[100%] w-[100%] object-cover" src="${song.cover}">`;
     const textContainer = document.createElement("div");
     textContainer.classList.add("text-white");
 

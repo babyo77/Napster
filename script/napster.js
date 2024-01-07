@@ -19,6 +19,7 @@ const SongsFragment = document.createDocumentFragment();
 const Share = document.querySelector(".Share");
 const Transfer = document.querySelector(".Transfer");
 let FocusSong;
+let touchStartX;
 
 let CurrentCover = document.querySelectorAll(".CurrentCover");
 let CurrentSongTitle = document.querySelector(".CurrentSongTitle");
@@ -26,7 +27,8 @@ let CurrentSongTitle2 = document.querySelector(".CurrentSongTitle2");
 let CurrentArtist = document.querySelectorAll(".CurrentArtist");
 let FetchSongs = [];
 let PlaylistUrl;
-let SongPlaying = parseInt(localStorage.getItem("song")) || parseInt(url.get("song")) || 0;
+let SongPlaying =
+  parseInt(localStorage.getItem("song")) || parseInt(url.get("song")) || 0;
 let MusicAudio;
 
 function GetPlaylist() {
@@ -175,18 +177,21 @@ function AddEventListeners() {
       PreviousSong();
     });
   });
-  
-  ShareNapster.addEventListener("click", async () => {
-    if (navigator.share) {
-      const location = window.location.replace("?share&song=", "");
-      await navigator.share({
-        title: "Napster",
-        text: `${FetchSongs[SongPlaying].title} by ${FetchSongs[SongPlaying].artist}`,
-        url: window.location.href + `?share&song=${SongPlaying}`,
-      });
-    } else {
-      alert("Unable To Share");
-    }
+
+  CurrentCover.forEach((CurrentCover) => {
+    CurrentCover.addEventListener(
+      "touchstart",
+      (e) => (touchStartX = e.changedTouches[0].clientX),
+      { passive: true }
+    );
+    CurrentCover.addEventListener(
+      "touchend",
+      (e) =>
+        e.changedTouches[0].clientX - touchStartX > 0
+          ? PreviousSong()
+          : NextSong(),
+      { passive: true }
+    );
   });
 
   ClosePlayer.forEach((ClosePlayer) => {
@@ -205,12 +210,12 @@ function AddEventListeners() {
 }
 
 Share.addEventListener("click", async () => {
-  const Location = (window.location.href).replace("?share&song=")
+  const Location = window.location.href.replace("?share&song=");
   if (navigator.share) {
     await navigator.share({
       title: "Napster",
       text: `${FetchSongs[SongPlaying].title} by ${FetchSongs[SongPlaying].artist}`,
-      url: Location + `?share&song=${SongPlaying}`
+      url: Location + `?share&song=${SongPlaying}`,
     });
   } else {
     alert("Unable To Share");
@@ -223,11 +228,10 @@ Transfer.addEventListener("click", () => {
 
 ShareNapster.addEventListener("click", async () => {
   if (navigator.share) {
-    const location = window.location.replace("?share&song=", "");
     await navigator.share({
       title: "Napster",
-      text: `${FetchSongs[SongPlaying].title} by ${FetchSongs[SongPlaying].artist}`,
-      url: window.location.href + `?share&song=${SongPlaying}`,
+      text: `Listen Your Playlist Ad Free `,
+      url: window.location.origin,
     });
   } else {
     alert("Unable To Share");
@@ -255,12 +259,12 @@ function AddMarquee() {
 }
 
 function PlaySong(index) {
-  localStorage.setItem("song",index)
+  localStorage.setItem("song", index);
   const SongId = FetchSongs[SongPlaying].audio.replace(
     "https://www.youtube.com/watch?v=",
     ""
   );
- 
+
   ChangeCurrentSong(SongPlaying);
   FocusCurrentSong(SongPlaying);
   if (MusicAudio) {
@@ -304,6 +308,7 @@ function PlaySong(index) {
     },
     onloaderror: function (error) {
       if (error) {
+        HideShowLoader(false);
         console.log("Going server 2");
         NextSong();
       }

@@ -444,6 +444,7 @@ function SeekBar() {
 }
 
 function newHowl(SongId) {
+  HideShowLoader(false);
   fetch(
     `https://worrisome-leggings-tick.cyclic.app/player?s=${SongId}&a=Paradox`
   ).then((res) => {
@@ -495,7 +496,7 @@ function newHowl(SongId) {
           if (error) {
             HideShowLoader(false);
             console.log("Going server 2");
-            NextSong();
+             newHowl(SongPlaying)
           }
         },
       });

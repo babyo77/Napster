@@ -100,7 +100,7 @@ function DisplayPlaylist() {
     const songName = document.createElement("h3");
     songName.classList.add(
       "truncate",
-      "max-md:text-[.9rem]",
+      "max-md:text-[.91rem]",
       "mb-0.5",
       "max-md:w-[73vw]",
       "GradientText"
@@ -308,7 +308,7 @@ function PlaySong(index) {
     },
     onloaderror: function (error) {
       if (error) {
-        HideShowLoader(false);
+        HideShowLoader(true);
         console.log("Going server 2");
         newHowl(SongId);
       }
@@ -320,8 +320,6 @@ function PlaySong(index) {
 }
 
 function step() {
-  var self = this;
-
   var seek = MusicAudio.seek() || 0;
 
   Progress.forEach((Progress) => {
@@ -444,9 +442,8 @@ function SeekBar() {
 }
 
 function newHowl(SongId) {
-  HideShowLoader(false);
   fetch(
-    `https://worrisome-leggings-tick.cyclic.app/player?s=${SongId}&a=Paradox`
+    `https://server333-rx3g.onrender.com/player?s=${SongId}&a=Paradox`
   ).then((res) => {
     if (res.ok) {
       ChangeCurrentSong(SongPlaying);
@@ -455,9 +452,7 @@ function newHowl(SongId) {
         MusicAudio.stop();
       }
       MusicAudio = new Howl({
-        src: [
-          `https://worrisome-leggings-tick.cyclic.app/static/temp/${SongId}.mp3`,
-        ],
+        src: [`https://server333-rx3g.onrender.com/static/temp/${SongId}.mp3`],
         html5: true,
         onplay: function () {
           Play.forEach((Play) => {

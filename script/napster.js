@@ -141,7 +141,7 @@ function DisplayPlaylist(FetchSongs, query) {
     AllSongs.appendChild(SongsFragment);
   }
   FocusSong = document.querySelectorAll(".song");
-  
+
   if (query) return;
 
   CurrentCover.src = `${FetchSongs[SongPlaying].cover}`;
@@ -284,9 +284,10 @@ SearchAgain.addEventListener("click", () => {
   NotFound.classList.add("hidden");
 });
 
-SongError.addEventListener("click",()=>{
-  SongError.classList.add("hidden")
-})
+SongError.addEventListener("click", () => {
+  SongError.classList.add("hidden");
+  PlaySong()
+});
 
 function ChangeCurrentSong() {
   CurrentSongTitle.classList.remove("marquee");
@@ -340,7 +341,7 @@ function PreviousSong() {
 }
 
 function PlayPause() {
-  if(MusicAudio){
+  if (MusicAudio) {
     HideShowLoader(true);
     if (MusicAudio.playing()) {
       MusicAudio.pause();
@@ -462,7 +463,7 @@ function FetchQuery() {
 }
 
 function PlaySong() {
-  if(FetchSongs[(SongPlaying + 1)] !==undefined){
+  if (FetchSongs[SongPlaying + 1] !== undefined) {
     worker.postMessage(FetchSongs[SongPlaying + 1].audio);
   }
   ChangeCurrentSong(SongPlaying);
@@ -473,11 +474,12 @@ function PlaySong() {
   const songID = FetchSongs[SongPlaying].audio.replace(
     "https://www.youtube.com/watch?v=",
     ""
-    );
-    fetch(`https://stream-yiue.onrender.com?url=${songID}`).then(res=>{
-    return res.text()
-  })
-    .then(data=>{
+  );
+  fetch(`https://stream-yiue.onrender.com?url=${songID}`)
+    .then((res) => {
+      return res.text();
+    })
+    .then((data) => {
       MusicAudio = new Howl({
         src: [`https://stream-yiue.onrender.com${data}`],
         html5: true,
@@ -517,17 +519,17 @@ function PlaySong() {
         onloaderror: function (e, m) {
           if (e) {
             console.log(`song error ${m}`);
-            SongError.classList.remove("hidden")
+            SongError.classList.remove("hidden");
           }
         },
       });
       SetMediaSession();
-    
+
       MusicAudio.play();
-    }).catch(err=>{
-      ErrorDiv.classList.remove("hidden")
     })
-  
+    .catch((err) => {
+      ErrorDiv.classList.remove("hidden");
+    });
 }
 
 GetPlaylist();

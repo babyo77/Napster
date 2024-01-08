@@ -350,7 +350,7 @@ function PlaySong(index) {
       if (error) {
         HideShowLoader(true);
         console.log("Music Playback",error);
-        NextSong()
+        
       }
     },
   });

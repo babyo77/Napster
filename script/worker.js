@@ -1,1 +1,1 @@
-onmessage=e=>{e.data;const t=e.data.replace("https://www.youtube.com/watch?v=","");fetch(`https://watery-muddy-thing.glitch.me?url=${t}`).catch((e=>{console.log("Worker",e.message)})),console.log(`${e.data} Fetched`)};
+onmessage=e=>{e.data;const t=e.data.replace("https://www.youtube.com/watch?v=","");fetch(`https://stream-yiue.onrender.com?url=${t}`).catch((e=>{console.log("Worker",e.message)})),console.log(`${e.data} Fetched`)};

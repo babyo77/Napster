@@ -1,1 +1,1 @@
-onmessage=e=>{const s=e.data;fetch(`https://stream-yiue.onrender.com?url=${s}`).catch((e=>{console.log(e.message)}))};
+onmessage=e=>{const s=e.data;fetch(`https://stream-yiue.onrender.com?url=${s}`).catch((e=>{console.log("Worker",e.message)}))};

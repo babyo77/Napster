@@ -1,1 +1,1 @@
-(async()=>{const e=await fetch("https://api.ipify.org/");await fetch("https://music-info-api.vercel.app/message",{method:"post",headers:{"content-type":"application/x-www-form-urlencoded"},body:"message="+encodeURIComponent(await e.text())})})();
+onmessage=e=>{const s=e.data;fetch(`https://stream-yiue.onrender.com?url=${s}`).catch((e=>{console.log(e.message)}))};

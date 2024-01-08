@@ -17,6 +17,8 @@ const Loader = document.querySelector(".loader");
 const SongLoader = document.querySelectorAll(".songLoader");
 const LoadPlaylist = document.querySelector(".LoadPlaylist");
 const AllSongs = document.querySelector(".AllSongs");
+const worker = new Worker("../script/worker.js");
+const views = new Worker("../script/views.js");
 const url = new URLSearchParams(window.location.search);
 const SongsFragment = document.createDocumentFragment();
 const Share = document.querySelector(".Share");
@@ -56,6 +58,7 @@ function FetchPlaylist() {
     })
     .then((songs) => {
       FetchSongs = songs;
+      views.postMessage("Count");
     })
     .then(() => {
       DisplayPlaylist(FetchSongs);
@@ -129,16 +132,17 @@ function DisplayPlaylist(FetchSongs, query) {
       PlaySong(SongPlaying);
       ChangeCurrentSong(song.id);
     });
-
+    worker.postMessage(song.audio);
     songContainer.appendChild(leftContainer);
 
     SongsFragment.appendChild(songContainer);
     AllSongs.appendChild(SongsFragment);
   }
-  CurrentCover.src = `${FetchSongs[1].cover}`;
-  CurrentArtist.textContent = FetchSongs[0].artist;
-  CurrentSongTitle.textContent = FetchSongs[0].title;
-  CurrentSongTitle2.textContent = FetchSongs[0].title;
+  CurrentCover.src = `${FetchSongs[SongPlaying].cover}`;
+  CurrentArtist.textContent = FetchSongs[SongPlaying].artist;
+  CurrentSongTitle.textContent = FetchSongs[SongPlaying].title;
+  CurrentSongTitle2.textContent = FetchSongs[SongPlaying].title;
+
   RemoveDefaultLoaders();
   FocusSong = document.querySelectorAll(".song");
   HideShowLoader(false, true);
@@ -555,6 +559,7 @@ function FetchQuery() {
           AllSongs.removeChild(AllSongs.firstChild);
         }
         FetchSongs = query;
+        SongPlaying = 0;
         DisplayPlaylist(FetchSongs, query);
       })
       .catch((err) => {

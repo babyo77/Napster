@@ -11,7 +11,10 @@ const Content = document.querySelector(".Content");
 const ShareNapster = document.querySelector(".ShareNapster");
 const Search = document.querySelector(".Search");
 const ErrorDiv = document.querySelector(".Error");
+const NotFound = document.querySelector(".NotFound");
 const Refresh = document.querySelector(".Refresh");
+const SearchAgain = document.querySelector(".SearchAgain");
+const SongError = document.querySelector(".SongError");
 
 const Loader = document.querySelector(".loader");
 const SongLoader = document.querySelectorAll(".songLoader");
@@ -132,25 +135,24 @@ function DisplayPlaylist(FetchSongs, query) {
       PlaySong(SongPlaying);
       ChangeCurrentSong(song.id);
     });
-    worker.postMessage(song.audio);
     songContainer.appendChild(leftContainer);
 
     SongsFragment.appendChild(songContainer);
     AllSongs.appendChild(SongsFragment);
   }
+  FocusSong = document.querySelectorAll(".song");
+  
+  if (query) return;
+
   CurrentCover.src = `${FetchSongs[SongPlaying].cover}`;
   CurrentArtist.textContent = FetchSongs[SongPlaying].artist;
   CurrentSongTitle.textContent = FetchSongs[SongPlaying].title;
   CurrentSongTitle2.textContent = FetchSongs[SongPlaying].title;
 
   RemoveDefaultLoaders();
-  FocusSong = document.querySelectorAll(".song");
+
   HideShowLoader(false, true);
-  if (query) {
-    HideShowLoader(true);
-    localStorage.clear();
-    return;
-  }
+
   AddEventListeners();
 }
 
@@ -223,6 +225,8 @@ function AddEventListeners() {
     Player.classList.remove("slide-down-top");
     Player.classList.add("max-md:block", "slide-in-top");
   });
+
+  SeekBar();
 }
 
 Share.addEventListener("click", async () => {
@@ -276,10 +280,18 @@ Refresh.addEventListener("click", () => {
   ErrorDiv.classList.add("hidden");
 });
 
-function ChangeCurrentSong(index) {
+SearchAgain.addEventListener("click", () => {
+  NotFound.classList.add("hidden");
+});
+
+SongError.addEventListener("click",()=>{
+  SongError.classList.add("hidden")
+})
+
+function ChangeCurrentSong() {
   CurrentSongTitle.classList.remove("marquee");
-  CurrentSongTitle.textContent = FetchSongs[index].title;
-  CurrentSongTitle2.textContent = FetchSongs[index].title;
+  CurrentSongTitle.textContent = FetchSongs[SongPlaying].title;
+  CurrentSongTitle2.textContent = FetchSongs[SongPlaying].title;
 
   CurrentCover.forEach((CurrentCover) => {
     CurrentCover.src =
@@ -288,7 +300,7 @@ function ChangeCurrentSong(index) {
   });
 
   CurrentArtist.forEach((CurrentArtist) => {
-    CurrentArtist.textContent = FetchSongs[index].artist;
+    CurrentArtist.textContent = FetchSongs[SongPlaying].artist;
   });
 }
 
@@ -298,70 +310,8 @@ function AddMarquee() {
   }
 }
 
-function PlaySong(index) {
-  localStorage.setItem("song", index);
-  const SongId = FetchSongs[SongPlaying].audio.replace(
-    "https://www.youtube.com/watch?v=",
-    ""
-  );
-
-  ChangeCurrentSong(SongPlaying);
-  FocusCurrentSong(SongPlaying);
-  if (MusicAudio) {
-    MusicAudio.stop();
-  }
-  MusicAudio = new Howl({
-    src: [`https://stream-yiue.onrender.com?url=${FetchSongs[index].audio}`],
-    html5: true,
-    onplay: function () {
-      Play.forEach((Play) => {
-        Play.classList.add("hidden");
-      });
-      Pause.forEach((Pause) => {
-        Pause.classList.remove("hidden");
-      });
-      HideShowLoader(false);
-      requestAnimationFrame(self.step.bind(self));
-      SeekBar();
-    },
-    onseek: function () {
-      requestAnimationFrame(self.step.bind(self));
-    },
-    onpause: function () {
-      HideShowLoader(false);
-      Play.forEach((Play) => {
-        Play.classList.remove("hidden");
-      });
-      Pause.forEach((Pause) => {
-        Pause.classList.add("hidden");
-      });
-    },
-    onend: function () {
-      NextSong();
-    },
-    onload: function () {
-      HideShowLoader(false);
-      AddMarquee();
-      Progress.forEach((Progress) => {
-        Progress.max = MusicAudio.duration();
-      });
-    },
-    onloaderror: function (error) {
-      if (error) {
-        HideShowLoader(true);
-        console.log("Music Playback",error);
-        
-      }
-    },
-  });
-  SetMediaSession();
-
-  MusicAudio.play();
-}
-
 function step() {
   var seek = MusicAudio.seek() || 0;
-
   Progress.forEach((Progress) => {
     Progress.value = seek;
   });
@@ -378,23 +328,25 @@ function NextSong() {
     SongPlaying++;
   }
   HideShowLoader(true);
-  PlaySong(SongPlaying);
+  PlaySong();
 }
 
 function PreviousSong() {
   if (SongPlaying > 0) {
     HideShowLoader(true);
     SongPlaying--;
-    PlaySong(SongPlaying);
+    PlaySong();
   }
 }
 
 function PlayPause() {
-  HideShowLoader(true);
-  if (MusicAudio.playing()) {
-    MusicAudio.pause();
-  } else {
-    MusicAudio.play();
+  if(MusicAudio){
+    HideShowLoader(true);
+    if (MusicAudio.playing()) {
+      MusicAudio.pause();
+    } else {
+      MusicAudio.play();
+    }
   }
 }
 
@@ -483,67 +435,6 @@ function SeekBar() {
   });
 }
 
-// function newHowl(SongId) {
-//   fetch(
-//     `https://server333-rx3g.onrender.com/player?s=${SongId}&a=Paradox`
-//   ).then((res) => {
-//     if (res.ok) {
-//       ChangeCurrentSong(SongPlaying);
-//       FocusCurrentSong(SongPlaying);
-//       if (MusicAudio) {
-//         MusicAudio.stop();
-//       }
-//       MusicAudio = new Howl({
-//         src: [`https://server333-rx3g.onrender.com/static/temp/${SongId}.mp3`],
-//         html5: true,
-//         onplay: function () {
-//           Play.forEach((Play) => {
-//             Play.classList.add("hidden");
-//           });
-//           Pause.forEach((Pause) => {
-//             Pause.classList.remove("hidden");
-//           });
-//           HideShowLoader(false);
-//           requestAnimationFrame(self.step.bind(self));
-//           SeekBar();
-//         },
-//         onseek: function () {
-//           requestAnimationFrame(self.step.bind(self));
-//         },
-//         onpause: function () {
-//           HideShowLoader(false);
-//           Play.forEach((Play) => {
-//             Play.classList.remove("hidden");
-//           });
-//           Pause.forEach((Pause) => {
-//             Pause.classList.add("hidden");
-//           });
-//         },
-//         onend: function () {
-//           NextSong();
-//         },
-//         onload: function () {
-//           HideShowLoader(false);
-//           AddMarquee();
-//           Progress.forEach((Progress) => {
-//             Progress.max = MusicAudio.duration();
-//           });
-//         },
-//         onloaderror: function (error) {
-//           if (error) {
-//             HideShowLoader(false);
-//             console.log("Going server 2");
-//             newHowl(SongPlaying);
-//           }
-//         },
-//       });
-//       SetMediaSession();
-
-//       MusicAudio.play();
-//     }
-//   });
-// }
-
 function FetchQuery() {
   const query = prompt("Search");
   if (query.trim() !== "") {
@@ -555,18 +446,88 @@ function FetchQuery() {
         return res.json();
       })
       .then((query) => {
+        worker.postMessage(query[0].audio);
         while (AllSongs.firstChild) {
           AllSongs.removeChild(AllSongs.firstChild);
         }
         FetchSongs = query;
-        SongPlaying = 0;
+        SongPlaying = -1;
         DisplayPlaylist(FetchSongs, query);
       })
       .catch((err) => {
-        ErrorDiv.classList.remove("hidden");
+        NotFound.classList.remove("hidden");
         console.log(err);
       });
   }
+}
+
+function PlaySong() {
+  if(FetchSongs[(SongPlaying + 1)] !==undefined){
+    worker.postMessage(FetchSongs[SongPlaying + 1].audio);
+  }
+  ChangeCurrentSong(SongPlaying);
+  FocusCurrentSong(SongPlaying);
+  if (MusicAudio) {
+    MusicAudio.stop();
+  }
+  const songID = FetchSongs[SongPlaying].audio.replace(
+    "https://www.youtube.com/watch?v=",
+    ""
+    );
+    fetch(`https://stream-yiue.onrender.com?url=${songID}`).then(res=>{
+    return res.text()
+  })
+    .then(data=>{
+      MusicAudio = new Howl({
+        src: [`https://stream-yiue.onrender.com${data}`],
+        html5: true,
+        onplay: function () {
+          localStorage.setItem("song", SongPlaying);
+          Play.forEach((Play) => {
+            Play.classList.add("hidden");
+          });
+          Pause.forEach((Pause) => {
+            Pause.classList.remove("hidden");
+          });
+          HideShowLoader(false);
+          requestAnimationFrame(self.step.bind(self));
+        },
+        onseek: function () {
+          requestAnimationFrame(self.step.bind(self));
+        },
+        onpause: function () {
+          HideShowLoader(false);
+          Play.forEach((Play) => {
+            Play.classList.remove("hidden");
+          });
+          Pause.forEach((Pause) => {
+            Pause.classList.add("hidden");
+          });
+        },
+        onend: function () {
+          NextSong();
+        },
+        onload: function () {
+          HideShowLoader(false);
+          AddMarquee();
+          Progress.forEach((Progress) => {
+            Progress.max = MusicAudio.duration();
+          });
+        },
+        onloaderror: function (e, m) {
+          if (e) {
+            console.log(`song error ${m}`);
+            SongError.classList.remove("hidden")
+          }
+        },
+      });
+      SetMediaSession();
+    
+      MusicAudio.play();
+    }).catch(err=>{
+      ErrorDiv.classList.remove("hidden")
+    })
+  
 }
 
 GetPlaylist();

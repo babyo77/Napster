@@ -543,7 +543,7 @@ function PlaySong(song, cover, title, artist) {
     ""
   );
   MusicAudio = new Howl({
-    src: [`https://subtle-mite-babyo77.koyeb.app?url=${songID}`],
+    src: [`https://wilful-mil-babyo7.koyeb.app/?url=${songID}`],
     html5: true,
     onplay: function () {
       localStorage.setItem("song", SongPlaying);

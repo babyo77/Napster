@@ -334,7 +334,7 @@ Invite.addEventListener("click", async (e) => {
       url: InviteLink,
     });
     SharePlayButton.classList.add("animate-pulse");
-    window.location.href = InviteLink;
+    history.pushState({}, '', `?room=${roomId}`);
   } else {
     alert("Unable To Share");
   }

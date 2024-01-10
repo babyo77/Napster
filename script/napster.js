@@ -275,7 +275,7 @@ ShareNapster.addEventListener("click", async () => {
 });
 
 LoadPlaylist.addEventListener("click", () => {
-  if (url.has("room") && SharePlayButton.classList.contains("fill-green-500")) {
+  if ((window.location.href).includes("?room") && SharePlayButton.classList.contains("fill-green-500")) {
     alert("Not available on Share Play 🦄 wait for update 🚀");
     return;
   }
@@ -504,7 +504,7 @@ function SeekBar() {
 }
 
 function FetchQuery() {
-  if (url.has("room") && SharePlayButton.classList.contains("fill-green-500")) {
+  if ((window.location.href).includes("?room") && SharePlayButton.classList.contains("fill-green-500")) {
     alert("Not available on Share Play 🦄 wait for update 🚀");
     return;
   }
@@ -599,6 +599,7 @@ function SharePlay(option, seek) {
   if (option == "play") {
     worker.postMessage(["play", RoomId, SongPlaying]);
   } else if (option == "joinRoom") {
+    history.pushState({},"",`?room=${RoomId}`)
     worker.postMessage(["joinRoom", RoomId, SongPlaying]);
   } else if (option == "seek") {
     worker.postMessage(["seek", RoomId, seek]);

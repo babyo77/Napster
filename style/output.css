@@ -572,6 +572,10 @@ video {
   top: 50%;
 }
 
+.-z-10 {
+  z-index: -10;
+}
+
 .z-10 {
   z-index: 10;
 }
@@ -589,12 +593,24 @@ video {
   margin-bottom: 0.5rem;
 }
 
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
 .mb-5 {
   margin-bottom: 1.25rem;
 }
 
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
+.mt-3\.5 {
+  margin-top: 0.875rem;
 }
 
 .mt-4 {
@@ -611,14 +627,6 @@ video {
 
 .mt-\[2svh\] {
   margin-top: 2svh;
-}
-
-.mt-3 {
-  margin-top: 0.75rem;
-}
-
-.mt-3\.5 {
-  margin-top: 0.875rem;
 }
 
 .inline-block {
@@ -693,6 +701,14 @@ video {
   height: 100svh;
 }
 
+.h-96 {
+  height: 24rem;
+}
+
+.h-52 {
+  height: 13rem;
+}
+
 .w-10 {
   width: 2.5rem;
 }
@@ -753,6 +769,10 @@ video {
   width: 100svw;
 }
 
+.w-96 {
+  width: 24rem;
+}
+
 .-translate-x-1\/2 {
   --tw-translate-x: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -794,6 +814,17 @@ video {
 
 .animate-background-shine {
   animation: background-shine 2s linear infinite;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 @keyframes pulse {
@@ -1060,6 +1091,10 @@ video {
   padding-left: 0.75rem;
 }
 
+.pr-3 {
+  padding-right: 0.75rem;
+}
+
 .pt-4 {
   padding-top: 1rem;
 }
@@ -1076,6 +1111,11 @@ video {
 .text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
+}
+
+.text-9xl {
+  font-size: 8rem;
+  line-height: 1;
 }
 
 .text-\[\.6rem\] {
@@ -1143,6 +1183,34 @@ video {
 .text-zinc-400 {
   --tw-text-opacity: 1;
   color: rgb(161 161 170 / var(--tw-text-opacity));
+}
+
+.opacity-5 {
+  opacity: 0.05;
+}
+
+.opacity-15 {
+  opacity: 0.15;
+}
+
+.opacity-100 {
+  opacity: 1;
+}
+
+.opacity-\[\.7rem\] {
+  opacity: .7rem;
+}
+
+.opacity-\[\.1rem\] {
+  opacity: .1rem;
+}
+
+.opacity-\[1rem\] {
+  opacity: 1rem;
+}
+
+.opacity-\[0rem\] {
+  opacity: 0rem;
 }
 
 .shadow-sm {
@@ -1389,5 +1457,10 @@ input[type="range"]::-ms-thumb {
   .max-md\:text-sm {
     font-size: 0.875rem;
     line-height: 1.25rem;
+  }
+
+  .max-md\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 }

@@ -14,11 +14,13 @@ const ErrorDiv = document.querySelector(".Error");
 const NotFound = document.querySelector(".NotFound");
 const Refresh = document.querySelector(".Refresh");
 const SearchAgain = document.querySelector(".SearchAgain");
-const SongError = document.querySelector(".SongError");
+const Connected = document.querySelector(".Connected");
 const SharePlayButton = document.querySelector(".SharePlayButton");
 const SharePlayDiv = document.querySelector(".SharePlay");
 const Invite = document.querySelector(".Invite");
 const YourRoomId = document.querySelector(".RoomID");
+const LikeDiv = document.querySelector(".LikeDiv");
+const Like = document.querySelector(".Like");
 
 const Loader = document.querySelector(".loader");
 const SongLoader = document.querySelectorAll(".songLoader");
@@ -33,7 +35,8 @@ const Transfer = document.querySelector(".Transfer");
 const News = document.querySelector(".News");
 let FocusSong;
 let touchStartX;
-let permission = false;
+let liked;
+let Connection;
 let RoomId = url.get("room") || generateRoomId();
 
 let CurrentCover = document.querySelectorAll(".CurrentCover");
@@ -270,12 +273,16 @@ ShareNapster.addEventListener("click", async () => {
       url: newUrl + (url.get("playlist") || ""),
     });
   } else {
-    alert("Unable To Share");
+    navigator.clipboard.writeText(newUrl + (url.get("playlist") || ""));
+    alert("Copied To Clipboard");
   }
 });
 
 LoadPlaylist.addEventListener("click", () => {
-  if ((window.location.href).includes("?room") && SharePlayButton.classList.contains("fill-green-500")) {
+  if (
+    window.location.href.includes("?room") &&
+    SharePlayButton.classList.contains("fill-green-500")
+  ) {
     alert("Not available on Share Play 🦄 wait for update 🚀");
     return;
   }
@@ -304,8 +311,8 @@ SearchAgain.addEventListener("click", () => {
   NotFound.classList.add("hidden");
 });
 
-SongError.addEventListener("click", () => {
-  SongError.classList.add("hidden");
+Connected.addEventListener("click", () => {
+  Connected.classList.add("hidden");
 });
 
 SharePlayButton.addEventListener("click", () => {
@@ -330,13 +337,14 @@ Invite.addEventListener("click", async (e) => {
   if (navigator.share) {
     await navigator.share({
       title: "Napster",
-      text: `Listen Your Playlist Ad Free `,
+      text: `Napster Share Play invite link`,
       url: InviteLink,
     });
     SharePlayButton.classList.add("animate-pulse");
-    history.pushState({}, '', `?room=${roomId}`);
+    history.pushState({}, "", `?room=${roomId}`);
   } else {
-    alert("Unable To Share");
+    navigator.clipboard.writeText(InviteLink);
+    alert("Copied To Clipboard");
   }
   SharePlayDiv.classList.add("hidden");
   e.stopPropagation();
@@ -347,10 +355,8 @@ News.addEventListener("click", () => {
   localStorage.setItem("news", true);
 });
 
-document.addEventListener("click", (e) => {
-  permission = true;
-  e.stopPropagation();
-  return;
+Like.addEventListener("click", () => {
+  SharePlay("liked");
 });
 
 function ChangeCurrentSong() {
@@ -387,6 +393,9 @@ function step() {
 }
 
 function NextSong() {
+  if (url.has("&song")) {
+    history.pushState({}, "", window.location.href.replace("&song", ""));
+  }
   if (SongPlaying == FetchSongs.length - 1) {
     SongPlaying = 0;
   } else {
@@ -504,7 +513,10 @@ function SeekBar() {
 }
 
 function FetchQuery() {
-  if ((window.location.href).includes("?room") && SharePlayButton.classList.contains("fill-green-500")) {
+  if (
+    window.location.href.includes("?room") &&
+    SharePlayButton.classList.contains("fill-green-500")
+  ) {
     alert("Not available on Share Play 🦄 wait for update 🚀");
     return;
   }
@@ -580,7 +592,6 @@ function PlaySong(song, cover, title, artist) {
     },
     onloaderror: function (e, m) {
       if (e) {
-        // SongError.classList.remove("hidden");
         console.log("server doing sex");
       }
     },
@@ -599,10 +610,11 @@ function SharePlay(option, seek) {
   if (option == "play") {
     worker.postMessage(["play", RoomId, SongPlaying]);
   } else if (option == "joinRoom") {
-    
     worker.postMessage(["joinRoom", RoomId, SongPlaying]);
   } else if (option == "seek") {
     worker.postMessage(["seek", RoomId, seek]);
+  } else if (option == "liked") {
+    worker.postMessage(["liked", RoomId, seek]);
   }
 }
 
@@ -614,6 +626,12 @@ worker.onmessage = (e) => {
     SongPlaying = parseInt(message[1]);
     PlaySong();
   } else if (message[0] == "joined") {
+    Connected.classList.remove("hidden");
+    Like.classList.remove("hidden");
+    clearTimeout(Connection);
+    Connection = setTimeout(() => {
+      Connected.classList.add("hidden");
+    }, 1100);
     SharePlayButton.classList.replace("fill-red-500", "fill-green-500");
     SharePlayButton.classList.remove("animate-pules");
   } else if (message[0] == "seek") {
@@ -621,6 +639,13 @@ worker.onmessage = (e) => {
   } else if (message[0] == "userLeft") {
     SharePlayButton.classList.replace("fill-green-500", "fill-red-500");
     SharePlayButton.classList.add("animate-pules");
+    Like.classList.add("hidden");
+  } else if (message[0] == "like") {
+    LikeDiv.classList.remove("hidden");
+    clearTimeout(liked);
+    liked = setTimeout(() => {
+      LikeDiv.classList.add("hidden");
+    }, 4000);
   }
 };
 

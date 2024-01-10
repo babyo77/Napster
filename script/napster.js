@@ -543,7 +543,7 @@ function PlaySong(song, cover, title, artist) {
     ""
   );
   MusicAudio = new Howl({
-    src: [`https://watery-muddy-thing.glitch.me/?url=${songID}`],
+    src: [`https://unconscious-elianora-babyo7.koyeb.app/?url=${songID}`],
     html5: true,
     onplay: function () {
       localStorage.setItem("song", SongPlaying);

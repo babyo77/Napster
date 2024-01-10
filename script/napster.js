@@ -599,7 +599,7 @@ function SharePlay(option, seek) {
   if (option == "play") {
     worker.postMessage(["play", RoomId, SongPlaying]);
   } else if (option == "joinRoom") {
-    history.pushState({},"",`?room=${RoomId}`)
+    
     worker.postMessage(["joinRoom", RoomId, SongPlaying]);
   } else if (option == "seek") {
     worker.postMessage(["seek", RoomId, seek]);

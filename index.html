@@ -91,6 +91,57 @@
       </div>
     </div>
     <div
+      class="absolute News h-svh w-svw backdrop-blur-2xl bg-zinc-900/70 z-10"
+    >
+      <div
+        class="absolute rounded-xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-center flex-col items-center"
+      >
+        <div class="flex flex-col justify-center items-center">
+          <span
+            class="inline-flex max-md:text-2xl whitespace-nowrap mb-5 font-semibold animate-text-gradient bg-gradient-to-r from-[#b2a8fd] via-[#5f4ded] to-[#c7d2fe] bg-[200%_auto] bg-clip-text text-3xl text-transparent leading-tight"
+          >
+            Whats New ?<br />
+            Now listen music together <br />
+            in real-time! 🎧 <br />
+            #MusicTogether 🦄
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="absolute SharePlay hidden h-svh w-svw backdrop-blur-2xl bg-zinc-900/70 z-10"
+    >
+      <div
+        class="absolute rounded-xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-center flex-col items-center"
+      >
+        <div class="flex flex-col justify-center items-center">
+          <span
+            class="inline-flex animate-background-shine bg-[linear-gradient(110deg,#939393,45%,#fff,55%,#939393)] bg-[length:250%_100%] bg-clip-text text-3xl font-semibold mb-2 text-transparent whitespace-nowrap max-md:text-2xl"
+          >
+            Invite to start share play
+          </span>
+          <span
+            class="inline-flex RoomID animate-background-shine bg-[linear-gradient(110deg,#939393,45%,#fff,55%,#939393)] bg-[length:250%_100%] bg-clip-text text-xl font-semibold mb-2 text-transparent whitespace-nowrap max-md:text-sm"
+          >
+            m_IFib8I_iM_q5EGAAAJ'
+          </span>
+
+          <span
+            class="relative mt-4 Invite inline-block overflow-hidden rounded-full p-[1px]"
+          >
+            <span
+              class="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]"
+            ></span>
+            <div
+              class="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950/90 px-3 py-1 text-sm text-white backdrop-blur-3xl font-semibold"
+            >
+              Invite Now
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       class="absolute NotFound hidden h-svh w-svw backdrop-blur-2xl bg-zinc-900/70 z-10"
     >
       <div
@@ -128,11 +179,11 @@
           <span
             class="inline-flex max-md:text-2xl whitespace-nowrap mb-5 font-semibold animate-text-gradient bg-gradient-to-r from-[#b2a8fd] via-[#5f4ded] to-[#c7d2fe] bg-[200%_auto] bg-clip-text text-3xl text-transparent"
           >
-            Error 777 🦄
+            You are Connected 🦄
           </span>
 
           <span
-            class="relative  inline-block overflow-hidden rounded-full p-[1px]"
+            class="relative inline-block overflow-hidden rounded-full p-[1px]"
           >
             <span
               class="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]"
@@ -140,7 +191,7 @@
             <div
               class="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950/90 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl"
             >
-              Refresh
+              Start Listening
             </div>
           </span>
         </div>
@@ -290,13 +341,13 @@
           <svg
             class="hover:stroke-[#E2CBFF] Search transition-all duration-300 cursor-pointer"
             fill="none"
-            height="24"
+            height="22"
             stroke="white"
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
             viewBox="0 0 24 24"
-            width="24"
+            width="22"
             xmlns="http://www.w3.org/2000/svg"
           >
             <circle cx="11" cy="11" r="8" />
@@ -304,10 +355,10 @@
           </svg>
 
           <svg
-            height="24"
+            height="22"
             class="ShareNapster fill-white hover:fill-[#E2CBFF] transition-all duration-300 cursor-pointer"
             viewBox="0 0 24 24"
-            width="24"
+            width="22"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -327,6 +378,19 @@
               d="M19.924 10.383a1 1 0 0 0-.217-1.09l-5-5-1.414 1.414L16.586 9H4v2h15a1 1 0 0 0 .924-.617zM4.076 13.617a1 1 0 0 0 .217 1.09l5 5 1.414-1.414L7.414 15H20v-2H5a.999.999 0 0 0-.924.617z"
             />
           </svg>
+
+          <svg
+            fill="none"
+            height="28"
+            class="fill-red-500 SharePlayButton duration-300 transition-all cursor-pointer hover:fill-[#E2CBFF]"
+            viewBox="0 0 24 24"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.98959 4.92865C6.28249 5.22155 6.28249 5.69642 5.98959 5.98931C2.67014 9.30877 2.67014 14.6907 5.98959 18.0101C6.28249 18.303 6.28249 18.7779 5.98959 19.0708C5.6967 19.3637 5.22183 19.3637 4.92893 19.0708C1.02369 15.1655 1.02369 8.8339 4.92893 4.92865C5.22183 4.63576 5.6967 4.63576 5.98959 4.92865ZM19.0711 4.92865C22.9763 8.8339 22.9763 15.1655 19.0711 19.0708C18.7782 19.3637 18.3033 19.3637 18.0104 19.0708C17.7175 18.7779 17.7175 18.303 18.0104 18.0101C21.3299 14.6907 21.3299 9.30877 18.0104 5.98931C17.7175 5.69642 17.7175 5.22155 18.0104 4.92865C18.3033 4.63576 18.7782 4.63576 19.0711 4.92865ZM8.81802 7.75708C9.11091 8.04997 9.11091 8.52485 8.81802 8.81774C7.06066 10.5751 7.06066 13.4243 8.81802 15.1817C9.11091 15.4746 9.11091 15.9495 8.81802 16.2424C8.52513 16.5353 8.05025 16.5353 7.75736 16.2424C5.41421 13.8992 5.41421 10.1002 7.75736 7.75708C8.05025 7.46419 8.52513 7.46419 8.81802 7.75708ZM16.2426 7.75708C18.5858 10.1002 18.5858 13.8992 16.2426 16.2424C15.9497 16.5353 15.4749 16.5353 15.182 16.2424C14.8891 15.9495 14.8891 15.4746 15.182 15.1817C16.9393 13.4243 16.9393 10.5751 15.182 8.81774C14.8891 8.52485 14.8891 8.04997 15.182 7.75708C15.4749 7.46419 15.9497 7.46419 16.2426 7.75708ZM12 10.4997C12.8284 10.4997 13.5 11.1713 13.5 11.9997C13.5 12.8281 12.8284 13.4997 12 13.4997C11.1716 13.4997 10.5 12.8281 10.5 11.9997C10.5 11.1713 11.1716 10.4997 12 10.4997Z"
+            />
+          </svg>
         </div>
         <div
           class="flex gap-3 text-xl cursor-pointer justify-center items-center"
@@ -341,7 +405,7 @@
       </nav>
       <h1 class="text-white text-2xl font-semibold mt-4 px-2 pl-3">Songs</h1>
       <h1
-        class="hidden py-2 text-[.7rem] text-[.7rem] max-md:w-[73vw] max-md:text-[.91rem] text-zinc-400 max-md:block max-md:w-[73svw] max-md:text-[.9rem] mx-2 text-[#8678f9]"
+        class="hidden py-2 animate-pulse fill-green-500 text-[.7rem] text-[.7rem] max-md:w-[73vw] max-md:text-[.91rem] text-zinc-400 max-md:block max-md:w-[73svw] max-md:text-[.9rem] mx-2 text-[#8678f9]"
       ></h1>
       <div class="mt-2 h-[73svh] max-md:h-[69svh] overflow-auto AllSongs">
         <div

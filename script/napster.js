@@ -265,15 +265,16 @@ Transfer.addEventListener("click", () => {
 });
 
 ShareNapster.addEventListener("click", async () => {
-  const newUrl = window.location.href.replace("?playlist=");
   if (navigator.share) {
     await navigator.share({
       title: "Napster",
       text: `Listen Your Playlist Ad Free `,
-      url: newUrl + (url.get("playlist") || ""),
+      url: window.location.origin + (url.get("playlist") || ""),
     });
   } else {
-    navigator.clipboard.writeText(newUrl + (url.get("playlist") || ""));
+    navigator.clipboard.writeText(
+      window.location.origin + (url.get("playlist") || "")
+    );
     alert("Copied To Clipboard");
   }
 });
@@ -356,6 +357,12 @@ News.addEventListener("click", () => {
 });
 
 Like.addEventListener("click", () => {
+  LikeDiv.classList.remove("hidden");
+
+  clearTimeout(liked);
+  liked = setTimeout(() => {
+    LikeDiv.classList.add("hidden");
+  }, 4000);
   SharePlay("liked");
 });
 
@@ -642,6 +649,7 @@ worker.onmessage = (e) => {
     Like.classList.add("hidden");
   } else if (message[0] == "like") {
     LikeDiv.classList.remove("hidden");
+
     clearTimeout(liked);
     liked = setTimeout(() => {
       LikeDiv.classList.add("hidden");

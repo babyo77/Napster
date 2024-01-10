@@ -6,7 +6,6 @@ Napster.on("connect", () => {
 });
 Napster.on("PlaySong", (song, cover, title, artist) => {
   postMessage(["Play", song]);
-  console.log(song, cover, title, artist);
 });
 Napster.on("seek", (song) => {
   postMessage(["seek", song]);

@@ -334,6 +334,7 @@ Invite.addEventListener("click", async (e) => {
       url: InviteLink,
     });
     SharePlayButton.classList.add("animate-pulse");
+    window.location.href = InviteLink
   } else {
     alert("Unable To Share");
   }
@@ -544,7 +545,6 @@ function PlaySong(song, cover, title, artist) {
   MusicAudio = new Howl({
     src: [`https://watery-muddy-thing.glitch.me?url=${songID}`],
     html5: true,
-    autoUnlock: true,
     onplay: function () {
       localStorage.setItem("song", SongPlaying);
       Play.forEach((Play) => {

@@ -393,7 +393,7 @@ function step() {
 }
 
 function NextSong() {
-  if (url.has("&song")) {
+  if (window.location.href.includes("&song")) {
     history.pushState({}, "", window.location.href.replace("&song", ""));
   }
   if (SongPlaying == FetchSongs.length - 1) {

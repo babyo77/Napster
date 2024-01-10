@@ -267,7 +267,7 @@ ShareNapster.addEventListener("click", async () => {
     await navigator.share({
       title: "Napster",
       text: `Listen Your Playlist Ad Free `,
-      url: newUrl + url.get("playlist"),
+      url: newUrl + (url.get("playlist") || ""),
     });
   } else {
     alert("Unable To Share");
@@ -275,7 +275,7 @@ ShareNapster.addEventListener("click", async () => {
 });
 
 LoadPlaylist.addEventListener("click", () => {
-  if (url.has("room")) {
+  if (url.has("room") && SharePlayButton.classList.contains("fill-green-500")) {
     alert("Not available on Share Play 🦄 wait for update 🚀");
     return;
   }
@@ -334,7 +334,7 @@ Invite.addEventListener("click", async (e) => {
       url: InviteLink,
     });
     SharePlayButton.classList.add("animate-pulse");
-    window.location.href = InviteLink
+    window.location.href = InviteLink;
   } else {
     alert("Unable To Share");
   }
@@ -504,7 +504,7 @@ function SeekBar() {
 }
 
 function FetchQuery() {
-  if (url.has("room")) {
+  if (url.has("room") && SharePlayButton.classList.contains("fill-green-500")) {
     alert("Not available on Share Play 🦄 wait for update 🚀");
     return;
   }

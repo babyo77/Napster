@@ -1,5 +1,5 @@
 importScripts("https://cdn.socket.io/4.7.2/socket.io.min.js");
-const Napster = io("https://charmed-diamond-sovereign.glitch.me");
+const Napster = io("https://subtle-mite-babyo77.koyeb.app");
 
 Napster.on("connect", () => {
   postMessage(["connected"]);

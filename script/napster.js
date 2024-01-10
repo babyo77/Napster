@@ -282,7 +282,7 @@ LoadPlaylist.addEventListener("click", () => {
   const playlist = prompt("Enter Youtube Playlist URL");
   if (playlist && playlist.trim() !== "") {
     localStorage.setItem("song", 0);
-    const newURL = url.replace(
+    const newURL = playlist.replace(
       /^https?:\/\/youtube\.com\/playlist\?list=|&feature=shared$/g,
       ""
     );

@@ -22,6 +22,7 @@ const YourRoomId = document.querySelector(".RoomID");
 const LikeDiv = document.querySelector(".LikeDiv");
 const Like = document.querySelector(".Like");
 const fullScreen = document.querySelector(".Full");
+const NAPSTER = document.querySelector(".NAPSTER");
 
 const Loader = document.querySelector(".loader");
 const SongLoader = document.querySelectorAll(".songLoader");
@@ -262,7 +263,10 @@ Share.addEventListener("click", async () => {
 });
 
 Search.addEventListener("click", () => {
-  FetchQuery();
+  const query = prompt("Search");
+  if (query && query.trim() !== "") {
+    FetchQuery(query);
+  }
 });
 
 Transfer.addEventListener("click", () => {
@@ -369,6 +373,12 @@ Like.addEventListener("click", () => {
     LikeDiv.classList.add("hidden");
   }, 4000);
   SharePlay("liked");
+});
+
+NAPSTER.addEventListener("click", () => {
+  FetchQuery(
+    `?url=${url.get("playlist") || "PLeVdHaf0Nk496_cnHO1uG2QdywPhpWwOS"}`
+  );
 });
 
 function ChangeCurrentSong() {
@@ -528,7 +538,7 @@ function SeekBar() {
   });
 }
 
-function FetchQuery() {
+function FetchQuery(query) {
   if (
     window.location.href.includes("?room") &&
     SharePlayButton.classList.contains("fill-green-500")
@@ -536,28 +546,30 @@ function FetchQuery() {
     alert("Not available on Share Play 🦄 wait for update 🚀");
     return;
   }
-  const query = prompt("Search");
-  if (query && query.trim() !== "") {
-    fetch(`https://music-info-api.vercel.app/${query}`)
-      .then((res) => {
-        if (res.status == 500) {
-          throw new Error("Error");
-        }
-        return res.json();
-      })
-      .then((query) => {
+
+  fetch(`https://music-info-api.vercel.app/${query}`)
+    .then((res) => {
+      if (res.status == 500) {
+        throw new Error("Error");
+      }
+      return res.json();
+    })
+    .then((query) => {
+      if (query.length > 0) {
         while (AllSongs.firstChild) {
           AllSongs.removeChild(AllSongs.firstChild);
         }
         FetchSongs = query;
         SongPlaying = -1;
         DisplayPlaylist(FetchSongs, query);
-      })
-      .catch((err) => {
+      } else {
         NotFound.classList.remove("hidden");
-        console.log(err.message);
-      });
-  }
+      }
+    })
+    .catch((err) => {
+      NotFound.classList.remove("hidden");
+      console.log(err.message);
+    });
 }
 
 function PlaySong(song, cover, title, artist) {

@@ -126,7 +126,6 @@ function DisplayPlaylist(FetchSongs, query) {
     const songName = document.createElement("h3");
     songName.classList.add(
       "truncate",
-      "max-md:text-[.91rem]",
       "mb-0.5",
       "max-md:w-[73vw]",
       "GradientText"

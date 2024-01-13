@@ -21,6 +21,7 @@ const Invite = document.querySelector(".Invite");
 const YourRoomId = document.querySelector(".RoomID");
 const LikeDiv = document.querySelector(".LikeDiv");
 const Like = document.querySelector(".Like");
+const fullScreen = document.querySelector(".Full");
 
 const Loader = document.querySelector(".loader");
 const SongLoader = document.querySelectorAll(".songLoader");
@@ -42,7 +43,10 @@ let RoomId = url.get("room") || generateRoomId();
 let CurrentCover = document.querySelectorAll(".CurrentCover");
 let CurrentSongTitle = document.querySelector(".CurrentSongTitle");
 let CurrentSongTitle2 = document.querySelector(".CurrentSongTitle2");
+let CurrentSongTitle3 = document.querySelector(".CurrentSongTitle3");
 let CurrentArtist = document.querySelectorAll(".CurrentArtist");
+let CurrentDuration = document.querySelectorAll(".Start");
+let TotalDuration = document.querySelectorAll(".End");
 let FetchSongs = [];
 let PlaylistUrl;
 let SongPlaying =
@@ -160,6 +164,7 @@ function DisplayPlaylist(FetchSongs, query) {
   CurrentArtist.textContent = FetchSongs[SongPlaying].artist;
   CurrentSongTitle.textContent = FetchSongs[SongPlaying].title;
   CurrentSongTitle2.textContent = FetchSongs[SongPlaying].title;
+  CurrentSongTitle3.textContent = FetchSongs[SongPlaying].title;
 
   RemoveDefaultLoaders();
 
@@ -370,6 +375,7 @@ function ChangeCurrentSong() {
   CurrentSongTitle.classList.remove("marquee");
   CurrentSongTitle.textContent = FetchSongs[SongPlaying].title;
   CurrentSongTitle2.textContent = FetchSongs[SongPlaying].title;
+  CurrentSongTitle3.textContent = FetchSongs[SongPlaying].title;
 
   CurrentCover.forEach((CurrentCover) => {
     CurrentCover.src =
@@ -392,6 +398,9 @@ function step() {
   var seek = MusicAudio.seek() || 0;
   Progress.forEach((Progress) => {
     Progress.value = seek;
+    CurrentDuration.forEach((CurrentDuration) => {
+      CurrentDuration.textContent = formatDuration(MusicAudio.seek());
+    });
   });
 
   if (MusicAudio.playing()) {
@@ -591,6 +600,9 @@ function PlaySong(song, cover, title, artist) {
       NextSong();
     },
     onload: function () {
+      TotalDuration.forEach((TotalDuration) => {
+        TotalDuration.textContent = formatDuration(MusicAudio.duration());
+      });
       HideShowLoader(false);
       AddMarquee();
       Progress.forEach((Progress) => {
@@ -611,6 +623,15 @@ function PlaySong(song, cover, title, artist) {
   SetMediaSession();
 
   MusicAudio.play();
+}
+
+function formatDuration(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  const formattedMinutes = String(minutes).padStart(2, "0");
+  const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+  return `${formattedMinutes}:${formattedSeconds}`;
 }
 
 function SharePlay(option, seek) {
@@ -669,5 +690,31 @@ function generateRoomId() {
   const uniqueId = Math.random().toString(36).substr(2, 6);
   return "napster" + uniqueId;
 }
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    fullScreen.classList.replace("hidden", "flex");
+    document.body.requestFullscreen();
+  }
+  if (e.key == " ") {
+    PlayPause();
+    console.log("ok");
+  }
+  if (e.key === "ArrowRight") {
+    NextSong();
+  }
+  if (e.key === "ArrowLeft") {
+    PreviousSong();
+  }
+});
+
+document.addEventListener("fullscreenchange", function () {
+  if (!document.fullscreenElement) {
+    fullScreen.classList.replace("opacity-1", "opacity-0");
+    fullScreen.classList.replace("flex", "hidden");
+  } else {
+    fullScreen.classList.replace("hidden", "flex");
+    fullScreen.classList.replace("opacity-0", "opacity-1");
+  }
+});
 
 GetPlaylist();

@@ -310,6 +310,7 @@ LoadPlaylist.addEventListener("click", () => {
     FetchQuery(
       `?url=${newURL || "PLeVdHaf0Nk496_cnHO1uG2QdywPhpWwOS"}`
     );
+    history.pushState({},"",`?playlist=${newURL}`)
   }
 });
 

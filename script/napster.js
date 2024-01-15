@@ -249,12 +249,17 @@ function AddEventListeners() {
 }
 
 Share.addEventListener("click", async () => {
-  const Location = window.location.href.replace("?share&song=");
   if (navigator.share) {
     await navigator.share({
       title: "Napster",
       text: `${FetchSongs[SongPlaying].title} by ${FetchSongs[SongPlaying].artist}`,
-      url: Location + `?share&song=${SongPlaying}`,
+      url:
+        window.location.origin +
+        `?room=${RoomId}` +
+        `&playlist=${
+          url.get("playlist") || "PLeVdHaf0Nk496_cnHO1uG2QdywPhpWwOS"
+        }` +
+        `&share&song=${SongPlaying}`,
     });
   } else {
     alert("Unable To Share");
@@ -277,11 +282,11 @@ ShareNapster.addEventListener("click", async () => {
     await navigator.share({
       title: "Napster",
       text: `Listen Your Playlist Ad Free `,
-      url: window.location.origin + (url.get("playlist") || ""),
+      url: window.location.origin + (`?playlist=${url.get("playlist")}` || ""),
     });
   } else {
     navigator.clipboard.writeText(
-      window.location.origin + (url.get("playlist") || "")
+      window.location.origin + (`?playlist=${url.get("playlist")}` || "")
     );
     alert("Copied To Clipboard");
   }
@@ -302,11 +307,9 @@ LoadPlaylist.addEventListener("click", () => {
       /^https?:\/\/youtube\.com\/playlist\?list=|&feature=shared$/g,
       ""
     );
-    window.location.href =
-      window.location.origin +
-      `?room=${RoomId}` +
-      `&playlist=${newURL || "PLeVdHaf0Nk496_cnHO1uG2QdywPhpWwOS"}` +
-      `&share&song=0`;
+    FetchQuery(
+      `?url=${newURL || "PLeVdHaf0Nk496_cnHO1uG2QdywPhpWwOS"}`
+    );
   }
 });
 

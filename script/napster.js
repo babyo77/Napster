@@ -48,6 +48,7 @@ let CurrentSongTitle3 = document.querySelector(".CurrentSongTitle3");
 let CurrentArtist = document.querySelectorAll(".CurrentArtist");
 let CurrentDuration = document.querySelectorAll(".Start");
 let TotalDuration = document.querySelectorAll(".End");
+let CurrentPlaylist = "PLeVdHaf0Nk496_cnHO1uG2QdywPhpWwOS"
 let FetchSongs = [];
 let PlaylistUrl;
 let SongPlaying =
@@ -60,6 +61,7 @@ function GetPlaylist() {
     PlaylistUrl = `https://music-info-api.vercel.app/?url=${url.get(
       "playlist"
     )}`;
+    CurrentPlaylist = url.get("playlist")
   } else {
     PlaylistUrl =
       "https://music-info-api.vercel.app/?url=PLeVdHaf0Nk496_cnHO1uG2QdywPhpWwOS";
@@ -282,11 +284,11 @@ ShareNapster.addEventListener("click", async () => {
     await navigator.share({
       title: "Napster",
       text: `Listen Your Playlist Ad Free `,
-      url: window.location.origin + (`?playlist=${url.get("playlist")}` || ""),
+      url: window.location.origin + (`?playlist=${CurrentPlaylist}`),
     });
   } else {
     navigator.clipboard.writeText(
-      window.location.origin + (`?playlist=${url.get("playlist")}` || "")
+      window.location.origin + (`?playlist=${CurrentPlaylist}`)
     );
     alert("Copied To Clipboard");
   }
@@ -310,6 +312,8 @@ LoadPlaylist.addEventListener("click", () => {
     FetchQuery(
       `?url=${newURL || "PLeVdHaf0Nk496_cnHO1uG2QdywPhpWwOS"}`
     );
+    CurrentPlaylist= newURL
+    history.pushState({},"",``)
     history.pushState({},"",`?playlist=${newURL}`)
   }
 });

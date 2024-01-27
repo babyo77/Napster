@@ -4,7 +4,7 @@
 
 Napster is a music webb app where user can listen their playlist Ad free.
 
-###``#Live demo``
+### ``#Live demo``
 
 [Napster - listen ad free playlist](https://your-napster.vercel.app)
 
@@ -13,13 +13,13 @@ Napster is a music webb app where user can listen their playlist Ad free.
 [Get Api here](https://t7uy9dv1k3t.typeform.com/to/zUPL46hx?typeform-source=twitter-button )
 or copy and open in new tab - https://t7uy9dv1k3t.typeform.com/to/zUPL46hx
 
-###``#Teach Stack``
+### ``#Teach Stack``
 
 - Html
 - Tailwind-css
 - Howler-js
 
-###``#Fetures``
+### ``#Fetures``
 
 - you can listen music in realtime with your loved ones / in groups known as Napster-Share-play.
 - Support background play.

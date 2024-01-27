@@ -1,5 +1,6 @@
 importScripts("https://cdn.socket.io/4.7.2/socket.io.min.js");
 const Napster = io("https://subtle-mite-babyo77.koyeb.app");
+console.log('%cNapster - by babyo7_ ', 'background-image: linear-gradient(90deg,#8000ff,#6bc5f8); color: white;font-weight:900;font-size:1rem; padding:20px;');
 
 Napster.on("connect", () => {
   postMessage(["connected"]);

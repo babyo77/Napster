@@ -1,5 +1,5 @@
 # `Naspter - by babyo7_`
-[![X](https://img.shields.io/badge/X-%23000000.svg?style=for-the-badge&logo=X&logoColor=white)](https:twitter.com/yanmay11117)
+[![X](https://img.shields.io/badge/X-%23000000.svg?style=for-the-badge&logo=X&logoColor=white)](https:twitter.com/tanmay11117)
 ### ``Introduction``
 
 Napster is a music webb app where user can listen their playlist Ad free.

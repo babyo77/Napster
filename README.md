@@ -26,4 +26,4 @@ or copy and open in new tab - https://t7uy9dv1k3t.typeform.com/to/zUPL46hx
 - all other music web app feature.
 
 ### ``Feedback``
-[For ui changes or make this in react](https://ngl.up.railway.app/babyo7)
+[For ui changes,make this in react or add this features](https://ngl.up.railway.app/babyo7)
